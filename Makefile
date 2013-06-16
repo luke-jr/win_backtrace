@@ -1,12 +1,18 @@
 .PHONY: all clean
 
+CHOST = i686-pc-mingw32
+CC = $(CHOST)-gcc
+
+CFLAGS = -g -O2 -Wall
+CPATHS = -I /usr/lib/binutils/$(CHOST)/*/include/ -L /usr/$(CHOST)/usr/lib/binutils/$(CHOST)/*/
+
 all : backtrace.dll test.exe
 
 backtrace.dll : backtrace.c
-	gcc -O2 -shared -Wall -o $@ $^ -lbfd -lintl -liberty -limagehlp
+	$(CC) -shared $(CFLAGS) $(CPATHS) -g0 -D PACKAGE='"backtrace.dll"' -o $@ $^ -lbfd -liberty -limagehlp -lz
 
 test.exe : test.c
-	gcc -g -Wall -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^
 
 clean :
-	-del -f backtrace.dll test.exe
+	-rm -f backtrace.dll test.exe
