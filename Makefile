@@ -4,7 +4,7 @@ CHOST = i686-pc-mingw32
 CC = $(CHOST)-gcc
 
 CFLAGS = -g -O2 -Wall
-CPATHS = -I /usr/lib/binutils/$(CHOST)/*/include/ -L /usr/$(CHOST)/usr/lib/binutils/$(CHOST)/*/
+CPATHS = $(foreach dir,$(wildcard /usr/$(CHOST)/usr/lib/binutils/$(CHOST)/*),-I$(dir)/include -L$(dir))
 
 all : backtrace.dll test.exe
 
